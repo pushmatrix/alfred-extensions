@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>action</key>
+	<false/>
+	<key>category</key>
+	<string>SCRIPTS</string>
+	<key>command</key>
+	<string># Extract the languages from the query
+SOURCE_LANGUAGE='sv'
+DESTINATION_LANGUAGE='en'
+
+# Transform the text to something Google translate understands
+set +o histexpand
+TEXT_TO_TRANSLATE=$(echo "{query}"|sed 's/ /+/g'|sed 's/'$SOURCE_LANGUAGE'//'|sed 's/'$DESTINATION_LANGUAGE'//')
+
+# Call Google and ask for the answer
+TEXT=`curl -s -A "Mozilla/5.0" "http://translate.google.com.br/translate_a/t?client=t&amp;text=$TEXT_TO_TRANSLATE&amp;hl=pt-BR&amp;sl=$SOURCE_LANGUAGE&amp;tl=$DESTINATION_LANGUAGE&amp;multires=1&amp;ssel=0&amp;tsel=0&amp;sc=1" | awk -F'"' '{print $2}'`
+
+# Make the clipboard able to handle international characters
+export __CF_USER_TEXT_ENCODING=0x1F5:0x8000100:0x8000100
+
+# Print the translated text and copy it to the clipboard
+echo $TEXT
+echo -n $TEXT | pbcopy</string>
+	<key>disabled</key>
+	<false/>
+	<key>escapedollar</key>
+	<false/>
+	<key>escapequery</key>
+	<false/>
+	<key>escapequerybackquotes</key>
+	<false/>
+	<key>escapequerybrackets</key>
+	<false/>
+	<key>escapequeryquotes</key>
+	<false/>
+	<key>escapequerysemicolons</key>
+	<false/>
+	<key>growloutput</key>
+	<true/>
+	<key>growloutputsticky</key>
+	<false/>
+	<key>keyword</key>
+	<string>tte</string>
+	<key>logging</key>
+	<false/>
+	<key>multifileargs</key>
+	<false/>
+	<key>parameter</key>
+	<integer>0</integer>
+	<key>silent</key>
+	<true/>
+	<key>subtitle</key>
+	<string>Translate text using Google translate</string>
+	<key>title</key>
+	<string>Translate Swedish to English</string>
+</dict>
+</plist>
